@@ -1,0 +1,137 @@
+; Windows 2000, XP, Vista, 7 and 8 (x32 and x64) setup file for Atmel CDC Devices
+; Copyright (c) 2000-2013 ATMEL, Inc.
+
+[Version] 
+Signature   = "$Windows NT$" 
+Class       = Ports 
+ClassGuid   = {4D36E978-E325-11CE-BFC1-08002BE10318} 
+
+Provider    = %Manufacturer% 
+LayoutFile  = layout.inf 
+CatalogFile = lotus_usbser.cat
+DriverVer   = 03/27/2020,6.0.0.0 
+
+;----------------------------------------------------------
+; Targets
+;----------------------------------------------------------
+[Manufacturer] 
+%Manufacturer%=DeviceList, NTAMD64, NTIA64, NT 
+
+[DeviceList]
+%LOTUS_CDC_A1HDC13G32%=DriverInstall, USB\VID_04D8&PID_EBB3
+%LOTUS_CDC_A1HDC13G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB2
+
+%LOTUS_CDC_A1Q5M6G32%=DriverInstall, USB\VID_04D8&PID_EBB4
+%LOTUS_CDC_A1Q5M6G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB0
+
+%LOTUS_CDC_A1Q9K8G32%=DriverInstall, USB\VID_04D8&PID_ED2D
+%LOTUS_CDC_A1Q9K8G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB1
+
+[DeviceList.NTAMD64]
+%LOTUS_CDC_A1HDC13G32%=DriverInstall, USB\VID_04D8&PID_EBB3
+%LOTUS_CDC_A1HDC13G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB2
+
+%LOTUS_CDC_A1Q5M6G32%=DriverInstall, USB\VID_04D8&PID_EBB4
+%LOTUS_CDC_A1Q5M6G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB0
+
+%LOTUS_CDC_A1Q9K8G32%=DriverInstall, USB\VID_04D8&PID_ED2D
+%LOTUS_CDC_A1Q9K8G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB1
+
+[DeviceList.NTIA64]
+%LOTUS_CDC_A1HDC13G32%=DriverInstall, USB\VID_04D8&PID_EBB3
+%LOTUS_CDC_A1HDC13G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB2
+
+%LOTUS_CDC_A1Q5M6G32%=DriverInstall, USB\VID_04D8&PID_EBB4
+%LOTUS_CDC_A1Q5M6G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB0
+
+%LOTUS_CDC_A1Q9K8G32%=DriverInstall, USB\VID_04D8&PID_ED2D
+%LOTUS_CDC_A1Q9K8G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB1
+
+[DeviceList.NT]
+%LOTUS_CDC_A1HDC13G32%=DriverInstall, USB\VID_04D8&PID_EBB3
+%LOTUS_CDC_A1HDC13G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB2
+
+%LOTUS_CDC_A1Q5M6G32%=DriverInstall, USB\VID_04D8&PID_EBB4
+%LOTUS_CDC_A1Q5M6G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB0
+
+%LOTUS_CDC_A1Q9K8G32%=DriverInstall, USB\VID_04D8&PID_ED2D
+%LOTUS_CDC_A1Q9K8G32_UF2%=DriverInstall, USB\VID_04D8&PID_EBB1
+
+;----------------------------------------------------------
+; Windows 2000, XP, Vista, Windows 7, Windows 8 - 32bit
+;----------------------------------------------------------
+[Reader_Install.NTx86] 
+
+
+[DestinationDirs] 
+DefaultDestDir=12 
+DriverInstall.NT.Copy=12 
+
+[DriverInstall.NT] 
+include=mdmcpq.inf
+CopyFiles=DriverInstall.NT.Copy 
+AddReg=DriverInstall.NT.AddReg 
+
+[DriverInstall.NT.Copy] 
+usbser.sys 
+
+[DriverInstall.NT.AddReg]
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider" 
+
+[DriverInstall.NT.Services] 
+AddService = usbser, 0x00000002, DriverService.NT 
+
+[DriverService.NT] 
+DisplayName = %Serial.SvcDesc% 
+ServiceType = 1 ; SERVICE_KERNEL_DRIVER 
+StartType = 3 ; SERVICE_DEMAND_START 
+ErrorControl = 1 ; SERVICE_ERROR_NORMAL 
+ServiceBinary = %12%\usbser.sys 
+LoadOrderGroup = Base 
+
+;----------------------------------------------------------
+; Windows XP, Vista, Windows 7, Windows 8 - 64bit
+;----------------------------------------------------------
+
+[DriverInstall.NTamd64]
+include=mdmcpq.inf
+CopyFiles=DriverCopyFiles.NTamd64
+AddReg=DriverInstall.NTamd64.AddReg
+
+[DriverCopyFiles.NTamd64]
+usbser.sys,,,0x20
+
+[DriverInstall.NTamd64.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NTamd64.Services]
+AddService=usbser, 0x00000002, DriverService.NTamd64
+
+[DriverService.NTamd64]
+DisplayName=%Serial.SvcDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+
+;----------------------------------------------------------
+; String
+;----------------------------------------------------------
+
+[Strings] 
+Manufacturer = "Lotus Communication Systems, Inc." 
+LOTUS_CDC_A1HDC13G32 = "LOTUS A1HDC13G32 Virtual Com Port"
+LOTUS_CDC_A1HDC13G32_UF2 = "LOTUS A1HDC13G32 UF2"
+
+LOTUS_CDC_A1Q5M6G32  = "LOTUS A1Q5M6G32 Virtual Com Port"
+LOTUS_CDC_A1Q5M6G32_UF2 = "LOTUS A1Q5M6G32 UF2"
+
+LOTUS_CDC_A1Q9K8G32  = "LOTUS A1Q9K8G32 Virtual Com Port"
+LOTUS_CDC_A1Q9K8G32_UF2 = "LOTUS A1Q9K8G32 UF2"
+
+Serial.SvcDesc = "USB Serial emulation driver" 
+

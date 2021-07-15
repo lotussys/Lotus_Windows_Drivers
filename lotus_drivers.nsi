@@ -5,7 +5,7 @@
 !include WinVer.nsh   # Windows version detection.
 !include x64.nsh      # X86/X64 version detection.
 
-!define VERSION 6.5.0.0
+!define VERSION 21.07.15.0
 
 # Set attributes that describe the installer.
 Icon "Assets\lotus.ico"
@@ -23,7 +23,7 @@ VIAddVersionKey /LANG=1033 "ProductName" "Lotus Board Drivers"
 VIAddVersionKey /LANG=1033 "CompanyName" "Lotus Communication Systems"
 VIAddVersionKey /LANG=1033 "LegalCopyright" "Lotus Communication Systems"
 VIAddVersionKey /LANG=1033 "FileDescription" "All in one installer for Lotus board drivers."
-VIAddVersionKey /LANG=1033 "FileVersion" "6.5.0.0"
+VIAddVersionKey /LANG=1033 "FileVersion" "21.07.15.0"
 VIProductVersion ${VERSION}
 VIFileVersion ${VERSION}
 
@@ -86,4 +86,7 @@ SectionEnd
 
 Function .onInit
   # Hide all drivers that aren't needed in Windows 10.
+  ${If} ${AtLeastWin10}
+    ${HideSection} ${USBSER_BOARDS}
+  ${EndIf}
 FunctionEnd
